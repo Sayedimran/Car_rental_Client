@@ -26,7 +26,7 @@ const Navber = () => {
           </li>
           <li>
             <NavLink
-              to="/AllCars"
+              to="/allCars"
               className={({ isActive }) =>
                 isActive ? `font-bold   ` : `font-bold ${gradient} `
               }
@@ -60,7 +60,7 @@ const Navber = () => {
   );
 
   return (
-    <div className="navbar bg-base-100 shadow-md px-4 md:px-8 sticky top-0 z-50 ">
+    <div className="navbar bg-gradient-to-r from-red-500 via-yellow-400 to-orange-500 shadow-lg sticky top-0 z-50">
       <div className="navbar-start">
         <div className="dropdown md:hidden">
           <label
