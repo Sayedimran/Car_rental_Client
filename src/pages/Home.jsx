@@ -8,7 +8,7 @@ const Home = () => {
     <div>
       <Carousel />
       <TabCategory />
-      <PropularCars />
+      
     </div>
   );
 };

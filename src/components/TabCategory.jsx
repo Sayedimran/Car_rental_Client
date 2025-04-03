@@ -5,9 +5,21 @@ import CarRentCard from "./CarRentCard";
 
 const TabCategory = () => {
   const [propulerCar, setPropulerCars] = useState([]);
-  console.log(propulerCar, "cars");
-  console.log(propulerCar.category);
-  
+
+  const [activeCategory, setActiveCategory] = useState("All Cars");
+
+  // Dynamic Tabs
+  const categories = [
+    "All Cars",
+    ...new Set(propulerCar.map((cartCategory) => cartCategory.category)),
+  ];
+  // filter Cards by Tabs clicking
+
+  const filterCardOfCars =
+    activeCategory === "All Cars"
+      ? propulerCar
+      : propulerCar.filter((cars) => cars.category === activeCategory);
+  // console.log(propulerCar, "cars");
 
   useEffect(() => {
     fetch("http://localhost:5000/cars")
@@ -25,50 +37,36 @@ const TabCategory = () => {
       </p>
 
       <Tabs className="mt-8">
-        <div className="flex justify-center">
-          <TabList className="flex space-x-1 bg-gradient-to-r from-blue-500 to-indigo-600 p-1 rounded-lg">
-            <Tab className="px-4 py-2 text-white rounded-md ui-selected:bg-white ui-selected:text-blue-600 ui-selected:font-bold">
-              All Cars
-            </Tab>
-            <Tab className="px-4 py-2 text-white rounded-md ui-selected:bg-white ui-selected:text-blue-600 ui-selected:font-bold">
-              Luxury
-            </Tab>
-            <Tab className="px-4 py-2 text-white rounded-md ui-selected:bg-white ui-selected:text-blue-600 ui-selected:font-bold">
-              SUVs
-            </Tab>
-            <Tab className="px-4 py-2 text-white rounded-md ui-selected:bg-white ui-selected:text-blue-600 ui-selected:font-bold">
-              Electric
-            </Tab>
+        <div className="flex  justify-center">
+          <TabList className=" grid grid-cols-2 md:grid-cols-8 lg:grid-cols-8 gap-3 space-x-1  p-1 rounded-lg">
+            {categories.map((category) => (
+              <Tab
+                key={category}
+                onClick={() => setActiveCategory(category)}
+                className={`px-4 py-2 rounded-md font-medium transition-all ${
+                  activeCategory === category
+                    ? " text-white bg-violet-800"
+                    : "text-black bg-cyan-100 hover:bg-violet-800 hover:text-white "
+                } `}
+                selectedClassName=""
+              >
+                {category}
+              </Tab>
+            ))}
           </TabList>
         </div>
 
-        <TabPanel>
-          <div className="flex justify-center">
-            <div className=" grid gap-4 justify-center  grid-cols-1 md:grid-cols-3  lg:grid-cols-4">
-              {propulerCar.map((cars) => (
-                <CarRentCard key={cars._id} cars={cars} />
-              ))}
+        {categories.map((categoryP) => (
+          <TabPanel key={categoryP}>
+            <div className="flex justify-center mt-4">
+              <div className=" grid gap-4 justify-center  grid-cols-1 md:grid-cols-3  lg:grid-cols-4">
+                {filterCardOfCars.map((cars) => (
+                  <CarRentCard key={cars._id} cars={cars} />
+                ))}
+              </div>
             </div>
-          </div>
-        </TabPanel>
-        <TabPanel>
-          <div className="grid grid-cols-1 gap-8 mt-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {/* Content for Luxury tab */}
-            <p>Luxury cars content goes here</p>
-          </div>
-        </TabPanel>
-        <TabPanel>
-          <div className="grid grid-cols-1 gap-8 mt-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {/* Content for SUVs tab */}
-            <p>SUVs content goes here</p>
-          </div>
-        </TabPanel>
-        <TabPanel>
-          <div className="grid grid-cols-1 gap-8 mt-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {/* Content for Electric tab */}
-            <p>Electric cars content goes here</p>
-          </div>
-        </TabPanel>
+          </TabPanel>
+        ))}
       </Tabs>
     </div>
   );

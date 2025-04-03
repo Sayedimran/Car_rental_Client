@@ -35,7 +35,7 @@ const Navber = () => {
             </NavLink>
           </li>
           <li>
-            <NavLink className={`font-bold ${gradient}`}>Add Car</NavLink>
+            <NavLink to='/addCars' className={`font-bold ${gradient}`}>Add Car</NavLink>
           </li>
           <li>
             <NavLink className={`font-bold ${gradient}`}>My Cars</NavLink>
