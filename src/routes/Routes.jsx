@@ -7,16 +7,30 @@ import Home from "../pages/Home";
 import PropularCars from "../components/PropularCars";
 import AddCars from "../components/AddCars";
 import Error404page from "../pages/Error404page";
+import MyCars from "../components/MyCars";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Main />,
-    errorElement:<Error404page/>,
+    errorElement: <Error404page />,
     children: [
       {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "/myCars",
+        element: <MyCars />,
+      },
+
+      {
+        path: "/allCars",
+        element: <PropularCars />,
+      },
+      {
+        path: "/addCars",
+        element: <AddCars />,
       },
       {
         path: "/register",
@@ -25,14 +39,6 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: <Login />,
-      },
-      {
-        path: "/allCars",
-        element: <PropularCars />,
-      },
-      {
-        path: "/addCars",
-        element: <AddCars />,
       },
     ],
   },

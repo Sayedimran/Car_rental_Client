@@ -18,7 +18,7 @@ const Navber = () => {
             <NavLink
               to="/"
               className={({ isActive }) =>
-                isActive ? `font-bold ` : `font-bold ${gradient}   `
+                isActive ? `font-bold text-white ` : `font-bold ${gradient}   `
               }
             >
               Home
@@ -28,29 +28,59 @@ const Navber = () => {
             <NavLink
               to="/allCars"
               className={({ isActive }) =>
-                isActive ? `font-bold   ` : `font-bold ${gradient} `
+                isActive ? `font-bold text-white ` : `font-bold ${gradient}   `
               }
             >
               Available Cars
             </NavLink>
           </li>
           <li>
-            <NavLink to='/addCars' className={`font-bold ${gradient}`}>Add Car</NavLink>
+            <NavLink
+              to="/addCars"
+              className={({ isActive }) =>
+                isActive ? `font-bold text-white ` : `font-bold ${gradient}   `
+              }
+            >
+              Add Car
+            </NavLink>
           </li>
           <li>
-            <NavLink className={`font-bold ${gradient}`}>My Cars</NavLink>
+            <NavLink
+              to="/myCars"
+              className={({ isActive }) =>
+                isActive ? `font-bold text-white ` : `font-bold ${gradient}   `
+              }
+            >
+              My Cars
+            </NavLink>
           </li>
           <li>
-            <NavLink className={`font-bold ${gradient}`}>My Bookings</NavLink>
+            <NavLink
+              className={({ isActive }) =>
+                isActive ? `font-bold ` : `font-bold ${gradient}   `
+              }
+            >
+              My Bookings
+            </NavLink>
           </li>
         </div>
       ) : (
         <div className="flex">
           <li>
-            <NavLink className={`font-bold ${gradient}`}>Home</NavLink>
+            <NavLink
+              className={({ isActive }) =>
+                isActive ? `font-bold text-white ` : `font-bold ${gradient}   `
+              }
+            >
+              Home
+            </NavLink>
           </li>
           <li>
-            <NavLink className={`font-bold ${gradient}`}>
+            <NavLink
+              className={({ isActive }) =>
+                isActive ? `font-bold text-white ` : `font-bold ${gradient}   `
+              }
+            >
               Available Cars
             </NavLink>
           </li>
