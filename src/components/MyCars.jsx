@@ -5,6 +5,7 @@ import { RingLoader } from "react-spinners";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
 import { AiTwotoneFolderAdd } from "react-icons/ai";
+import { div } from "framer-motion/client";
 // import { useNavigate } from "react-router-dom";
 
 const MyCars = () => {
@@ -74,46 +75,98 @@ const MyCars = () => {
   };
 
   return (
-    <div className="overflow-x-auto md:block ">
-      <table className="table w-full">
-        <thead>
-          <tr>
-            <th>Image</th>
-            <th>Model</th>
-            <th>Price</th>
-            <th>Bookings</th>
-            <th>Availability</th>
-            <th>Date Added</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {myCars.map((car) => (
-            <tr key={car._id}>
-              <td>
-                <img
-                  src={car.image}
-                  className="w-20 h-12 object-cover rounded"
-                />
-              </td>
-              <td>{car.model}</td>
-              <td>${car.price}</td>
-              <td>{car.bookingCount || 0}</td>
-              <td>{car.available ? "Available" : "Not Available"}</td>
-              <td>{car.date}</td>
-              <td>
-                <button className="btn btn-sm btn-info mr-2">Update</button>
-                <button
-                  onClick={() => handleDeletebtn(car._id)}
-                  className="btn btn-sm btn-error"
-                >
-                  Delete
-                </button>
-              </td>
+    <div>
+      <div className="flex flex-col py-3 px-3 sm:flex-row sm:items-end sm:justify-around gap-4 mb-6">
+        <div className="flex flex-wrap gap-4">
+          {/* Date Added diye sort korar dropdown */}
+          <div>
+            <label
+              htmlFor="dateSort"
+              className="block text-sm text-gray-600 mb-1"
+            >
+              Date Added
+            </label>
+            <select
+              id="dateSort"
+              className="border border-gray-300 rounded-lg px-4 py-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option>Newest First</option>
+              <option>Oldest First</option>
+            </select>
+          </div>
+
+          {/* Price diye sort korar dropdown */}
+          <div>
+            <label
+              htmlFor="priceSort"
+              className="block text-sm text-gray-600 mb-1"
+            >
+              Price
+            </label>
+            <select
+              id="priceSort"
+              className="border border-gray-300 rounded-lg px-4 py-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option>Lowest First</option>
+              <option>Highest First</option>
+            </select>
+          </div>
+        </div>
+
+        {/* Sort korar button */}
+        <button
+          type="button"
+          className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all shadow-sm"
+        >
+          Sort
+        </button>
+      </div>
+      <div className="overflow-x-auto ">
+        <table className="table  w-full">
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Model</th>
+              <th>Price</th>
+              <th>Bookings</th>
+              <th>Availability</th>
+              <th>Date Added</th>
+              <th>Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {myCars.map((car) => (
+              <tr key={car._id} className="border border-gray-200">
+                <td>
+                  <img
+                    src={car.image}
+                    className="w-20 h-12 object-cover rounded"
+                  />
+                </td>
+                <td>{car.model}</td>
+                <td>${car.price}</td>
+                <td>{car.bookingCount || 0}</td>
+                <td>{car.available ? "Available" : "Not Available"}</td>
+                <td>{car.date}</td>
+                <td>
+                  <Link
+                    to={`/update/${car._id}`}
+                    className="btn btn-sm btn-info mr-2"
+                  >
+                    Update
+                  </Link>
+                  <button
+                    onClick={() => handleDeletebtn(car._id)}
+                    className="btn btn-sm btn-error"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

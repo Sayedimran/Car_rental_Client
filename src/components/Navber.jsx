@@ -57,7 +57,7 @@ const Navber = () => {
           <li>
             <NavLink
               className={({ isActive }) =>
-                isActive ? `font-bold ` : `font-bold ${gradient}   `
+                isActive ? `font-bold text-white ` : `font-bold ${gradient}   `
               }
             >
               My Bookings

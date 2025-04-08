@@ -8,6 +8,7 @@ import PropularCars from "../components/PropularCars";
 import AddCars from "../components/AddCars";
 import Error404page from "../pages/Error404page";
 import MyCars from "../components/MyCars";
+import UpdatedCars from "../components/UpdatedCars";
 
 const router = createBrowserRouter([
   {
@@ -36,6 +37,11 @@ const router = createBrowserRouter([
         path: "/register",
         element: <Register />,
       },
+      {
+        path: "/update/:id",
+        element: <UpdatedCars />,
+      },
+
       {
         path: "/login",
         element: <Login />,

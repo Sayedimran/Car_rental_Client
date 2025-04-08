@@ -13,11 +13,12 @@ const CarRentCard = ({ cars }) => {
     year,
     seats,
     location,
-    pricePerDay,
+    price,
     image,
   } = cars;
   return (
     <div className="card w-80 bg-base-100 shadow-xl border border-gray-200 rounded-xl">
+      
       {/* Image Container with Zoom Effect */}
       <figure className="relative overflow-hidden rounded-t-xl">
         <img
@@ -33,7 +34,7 @@ const CarRentCard = ({ cars }) => {
       {/* Car Details */}
       <div className="p-4">
         <h2 className="text-lg font-bold">
-          {brand} {model}
+         {model}
         </h2>
         <div className="flex flex-wrap items-center text-sm text-gray-600 gap-2 my-2">
           <span>⚙️ {transmission}</span>
@@ -50,9 +51,7 @@ const CarRentCard = ({ cars }) => {
           <span className="flex items-center">
             <FaLocationDot /> {location}
           </span>
-          <span className="text-xl font-bold text-green-600">
-            ${pricePerDay}/day
-          </span>
+          <span className="text-xl font-bold text-green-600">${price}/day</span>
         </div>
 
         <button className="btn btn-dark text-white bg-black mt-2 w-full rounded-lg">
