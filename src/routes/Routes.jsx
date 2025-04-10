@@ -9,6 +9,7 @@ import AddCars from "../components/AddCars";
 import Error404page from "../pages/Error404page";
 import MyCars from "../components/MyCars";
 import UpdatedCars from "../components/UpdatedCars";
+import CarsDetails from "../pages/CarsDetails";
 
 const router = createBrowserRouter([
   {
@@ -41,7 +42,10 @@ const router = createBrowserRouter([
         path: "/update/:id",
         element: <UpdatedCars />,
       },
-
+      {
+        path: "/CarDetail/:id",
+        element: <CarsDetails />,
+      },
       {
         path: "/login",
         element: <Login />,

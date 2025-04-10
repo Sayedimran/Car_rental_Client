@@ -1,9 +1,10 @@
 import React from "react";
 import { FaLocationDot } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 
 const CarRentCard = ({ cars }) => {
+
   const {
-    id,
     brand,
     model,
     transmission,
@@ -17,8 +18,10 @@ const CarRentCard = ({ cars }) => {
     image,
   } = cars;
   return (
-    <div className="card w-80 bg-base-100 shadow-xl border border-gray-200 rounded-xl">
-      
+    <Link
+      to={`/CarDetail/${cars._id}`}
+      className="card w-80 bg-base-100 shadow-xl border border-gray-200 rounded-xl"
+    >
       {/* Image Container with Zoom Effect */}
       <figure className="relative overflow-hidden rounded-t-xl">
         <img
@@ -33,9 +36,7 @@ const CarRentCard = ({ cars }) => {
 
       {/* Car Details */}
       <div className="p-4">
-        <h2 className="text-lg font-bold">
-         {model}
-        </h2>
+        <h2 className="text-lg font-bold">{model}</h2>
         <div className="flex flex-wrap items-center text-sm text-gray-600 gap-2 my-2">
           <span>⚙️ {transmission}</span>
           <span>📏 {mileage} KM</span>
@@ -58,7 +59,7 @@ const CarRentCard = ({ cars }) => {
           🚗 Rent Now
         </button>
       </div>
-    </div>
+    </Link>
   );
 };
 

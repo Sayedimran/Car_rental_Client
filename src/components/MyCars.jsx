@@ -5,12 +5,14 @@ import { RingLoader } from "react-spinners";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
 import { AiTwotoneFolderAdd } from "react-icons/ai";
-import { div } from "framer-motion/client";
+import { IoFilter } from "react-icons/io5";
 // import { useNavigate } from "react-router-dom";
 
 const MyCars = () => {
   const { user } = UseAuth();
   const [myCars, setMyCars] = useState([]);
+  const [sortByDate, setSortByDate] = useState("");
+  const [sortByPrice, setSortByPrice] = useState("");
   const [loading, setloading] = useState(true);
   // const nevigate = useNavigate();
   useEffect(() => {
@@ -23,6 +25,24 @@ const MyCars = () => {
         });
     }
   }, [user]);
+
+  const handleSort = () => {
+    let sortedCars = [...myCars];
+    // price shorting
+    if (setSortByDate === "low") {
+      sortedCars.sort((a, b) => a.price - b.price);
+    } else if (setSortByPrice === "high") {
+      sortedCars.sort((a, b) => b.price - a.price);
+    }
+
+    if (setSortByDate === "newest") {
+      sortedCars.sort((a, b) => new b.date() - new a.date());
+    } else if (setSortByDate === "oldest") {
+      sortedCars.sort((a, b) => new a.date() - new b.date());
+    }
+
+    setMyCars(sortedCars);
+  };
 
   if (loading) {
     return (
@@ -80,18 +100,15 @@ const MyCars = () => {
         <div className="flex flex-wrap gap-4">
           {/* Date Added diye sort korar dropdown */}
           <div>
-            <label
-              htmlFor="dateSort"
-              className="block text-sm text-gray-600 mb-1"
-            >
+            <label className="block text-sm text-gray-600 mb-1">
               Date Added
             </label>
             <select
-              id="dateSort"
+              onChange={(e) => setSortByDate(e.target.value)}
               className="border border-gray-300 rounded-lg px-4 py-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option>Newest First</option>
-              <option>Oldest First</option>
+              <option value="newest">Newest First</option>
+              <option value="oldest">Oldest First</option>
             </select>
           </div>
 
@@ -104,20 +121,22 @@ const MyCars = () => {
               Price
             </label>
             <select
-              id="priceSort"
+              onChange={(e) => setSortByPrice(e.target.value)}
               className="border border-gray-300 rounded-lg px-4 py-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option>Lowest First</option>
-              <option>Highest First</option>
+              <option value="low">Lowest First</option>
+              <option value="high">Highest First</option>
             </select>
           </div>
         </div>
 
         {/* Sort korar button */}
         <button
+          onClick={handleSort}
           type="button"
-          className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all shadow-sm"
+          className=" flex  items-center gap-1 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all shadow-sm"
         >
+          <IoFilter className="text-lg " />
           Sort
         </button>
       </div>
