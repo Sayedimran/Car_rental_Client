@@ -56,7 +56,7 @@ const CarRentCard = ({ cars }) => {
         </div>
 
         <button className="btn btn-dark text-white bg-black mt-2 w-full rounded-lg">
-          🚗 Rent Now
+          🚗 Book Now
         </button>
       </div>
     </Link>

@@ -2,10 +2,16 @@ import { Dialog } from "@headlessui/react";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import UseAuth from "../Hooks/UseAuth";
+import Swal from "sweetalert2";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const CarsDetails = () => {
+  const { user } = UseAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
   const { id } = useParams();
   const [car, setCar] = useState({});
 
@@ -13,14 +19,57 @@ const CarsDetails = () => {
     fetchCarData();
   }, [id]);
 
-
   const { model, price, availability, features, image, description } =
     car || {};
+
   const fetchCarData = async () => {
     const { data } = await axios.get(
       `${import.meta.env.VITE_API_uRL}/car/${id}`
     );
     setCar(data);
+  };
+
+  const formatDate = (date) => {
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = `0${d.getMonth() + 1}`.slice(-2); // Month 0-based
+    const day = `0${d.getDate()}`.slice(-2);
+    return `${year}-${month}-${day}`;
+  };
+  const handleBooking = async () => {
+    const bookingData = {
+      carId: car._id,
+      userEmail: user.email,
+      model: model,
+      price,
+      status: "confirmed",
+      image: image,
+      startDate: formatDate(startDate), // 👈 Formatted date
+      endDate: formatDate(endDate), // 👈 Formatted date
+    };
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_API_uRL}/booking`,
+        bookingData
+      );
+
+      if (data.insertedId) {
+        Swal.fire({
+          icon: "success",
+          title: "Car Added!",
+          text: "Your car has been successfully added.",
+          timer: 2000,
+          showConfirmButton: false,
+        });
+        // navigate("/myBooking");
+      }
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: error?.response?.data?.message || "Something went wrong!",
+      });
+    }
   };
 
   return (
@@ -75,14 +124,14 @@ const CarsDetails = () => {
       <Dialog
         open={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        className="relative z-50"
+        className="relative z-[50]"
       >
-        <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
+        {/* <div className="fixed inset-0 bg-black/30" aria-hidden="true" /> */}
         <div className="fixed inset-0 flex items-center justify-center p-4">
-          <Dialog.Panel className="w-full max-w-md rounded-xl bg-white p-6 shadow-lg space-y-4">
-            <Dialog.Title className="text-xl font-semibold text-gray-800">
+          <Dialog.Panel className="w-full max-w-md rounded-xl bg-white p-6 shadow-lg space-y-4 relative">
+            <h1 className="text-xl font-semibold text-gray-800">
               Confirm Booking
-            </Dialog.Title>
+            </h1>
 
             <div className="text-gray-600 space-y-2">
               <p>
@@ -95,6 +144,35 @@ const CarsDetails = () => {
                 <strong>Status:</strong>{" "}
                 {availability ? "Available" : "Unavailable"}
               </p>
+
+              <div className="flex gap-2 mt-2">
+                <div className="w-full">
+                  <DatePicker
+                    selected={startDate}
+                    onChange={(date) => setStartDate(date)}
+                    selectsEnd
+                    startDate={startDate}
+                    endDate={endDate}
+                    minDate={startDate}
+                    placeholderText="Start Date"
+                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    popperClassName="z-[9999]"
+                  />
+                </div>
+                <div className="w-full">
+                  <DatePicker
+                    selected={endDate}
+                    onChange={(date) => setEndDate(date)}
+                    selectsEnd
+                    startDate={startDate}
+                    endDate={endDate}
+                    minDate={startDate}
+                    placeholderText="End Date"
+                    className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    popperClassName="z-[9999]"
+                  />
+                </div>
+              </div>
             </div>
 
             <div className="flex justify-end gap-3 mt-4">
@@ -105,8 +183,8 @@ const CarsDetails = () => {
                 Cancel
               </button>
               <button
-                onClick={() => {
-                  // TODO: Handle booking confirm
+                onClick={async () => {
+                  await handleBooking();
                   setIsModalOpen(false);
                 }}
                 className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"

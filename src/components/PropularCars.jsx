@@ -2,18 +2,48 @@ import React, { useEffect, useState } from "react";
 import CarRentCard from "./CarRentCard";
 import { FaSearch } from "react-icons/fa";
 import { IoFilter } from "react-icons/io5";
+import axios from "axios";
+import LoadingSpinner from "./LoadingSpinner";
+
 
 const PropularCars = () => {
   const [propulerCar, setPropulerCars] = useState([]);
   const [sortByDate, setSortByDate] = useState("");
   const [sortByPrice, setSortByPrice] = useState("");
-  // console.log(propulerCar);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [loading, setLoading] = useState(true);
+  console.log(propulerCar);
 
   useEffect(() => {
-    fetch("http://localhost:5000/cars")
-      .then((res) => res.json())
-      .then((data) => setPropulerCars(data));
+    const fetchPopularCars = async () => {
+      try {
+        const { data } = await axios(`${import.meta.env.VITE_API_uRL}/cars`);
+        setPropulerCars(data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching cars:", error);
+      }
+    };
+
+    fetchPopularCars();
   }, []);
+
+  if (loading) {
+    return (
+      <div>
+        <div className=" shadow-md flex flex-col md:flex-row items-center gap-16 w-full max-w-6xl mt-4 mx-auto bg-gray-200 rounded-xl animate-pulse"></div>
+        <div className="   max-w-6xl mt-4 mx-auto grid  gap-4 justify-center  grid-cols-1 md:grid-cols-3  lg:grid-cols-4 animate-pulse">
+          {[...Array(6)].map((_, i) => (
+            <div
+              key={i}
+              className="h-[330px] w-[280px] bg-gray-200 rounded-xl animate-pulse"
+            ></div>
+          ))}
+        </div>
+        ;
+      </div>
+    );
+  }
 
   const handleFilterbtn = () => {
     let sortedCars = [...propulerCar];
@@ -35,8 +65,12 @@ const PropularCars = () => {
     setPropulerCars(sortedCars);
   };
 
-  console.log(sortByDate);
-  console.log(sortByPrice);
+  const filteredCars = propulerCar.filter(
+    (car) =>
+      car.model.toLowerCase().includes(searchQuery) ||
+      car.brand.toLowerCase().includes(searchQuery) ||
+      car.location.toLowerCase().includes(searchQuery)
+  );
 
   return (
     <div>
@@ -47,6 +81,8 @@ const PropularCars = () => {
             type="text"
             placeholder="Search cars..."
             className="w-full px-5 py-3 text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value.toLowerCase())}
           />
           <FaSearch className="absolute top-3  right-6 text-gray-400 text-lg" />
         </div>
@@ -99,7 +135,7 @@ const PropularCars = () => {
       </div>
       <div className="flex justify-center mt-10">
         <div className=" grid gap-4 justify-center  grid-cols-1 md:grid-cols-3  lg:grid-cols-4">
-          {propulerCar.map((cars) => (
+          {filteredCars.map((cars) => (
             <CarRentCard key={cars._id} cars={cars} />
           ))}
         </div>

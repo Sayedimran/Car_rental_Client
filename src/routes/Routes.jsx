@@ -10,6 +10,8 @@ import Error404page from "../pages/Error404page";
 import MyCars from "../components/MyCars";
 import UpdatedCars from "../components/UpdatedCars";
 import CarsDetails from "../pages/CarsDetails";
+import MyBooking from "../components/MyBooking";
+import PrivateRoute from "./PrivateRoute";
 
 const router = createBrowserRouter([
   {
@@ -32,7 +34,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/addCars",
-        element: <AddCars />,
+        element: (
+          <PrivateRoute>
+            <AddCars />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/register",
@@ -40,11 +46,27 @@ const router = createBrowserRouter([
       },
       {
         path: "/update/:id",
-        element: <UpdatedCars />,
+        element: (
+          <PrivateRoute>
+            <UpdatedCars />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/CarDetail/:id",
-        element: <CarsDetails />,
+        element: (
+          <PrivateRoute>
+            <CarsDetails />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/myBooking",
+        element: (
+          <PrivateRoute>
+            <MyBooking />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/login",
