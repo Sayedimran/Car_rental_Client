@@ -18,58 +18,54 @@ const MyBooking = () => {
   useEffect(() => {
     if (user?.email) {
       axios
-        .get(`${import.meta.env.VITE_API_uRL}/bookedCar?email=${user.email}`)
+        .get(
+          `${import.meta.env.VITE_API_uRL}/bookedCar?userEmail=${user.email}`
+        )
         .then((res) => {
+          console.log("Booking Data:", res.data);
           setBooking(res.data);
         });
     }
-
-
-
-
-
-  }, [user]);
+  }, [user?.email]);
 
   // Cancel a booking
- const handleCancel = async (booking) => {
-   Swal.fire({
-     title: "Are you sure?",
-     text: "You are about to cancel this booking!",
-     icon: "warning",
-     showCancelButton: true,
-     confirmButtonColor: "#d33",
-     cancelButtonColor: "#3085d6",
-     confirmButtonText: "Yes, cancel it!",
-   }).then(async (result) => {
-     if (result.isConfirmed) {
-       try {
-         await axios.patch(
-           `${import.meta.env.VITE_API_uRL}/statusCar/${booking._id}`
-         );
+  const handleCancel = async (booking) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You are about to cancel this booking!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, cancel it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await axios.patch(
+            `${import.meta.env.VITE_API_uRL}/statusCar/${booking._id}`
+          );
 
-         // Update local state
-         const updated = booking.map((car) =>
-           car._id === booking._id ? { ...car, status: "Canceled" } : car
-         );
-         setBooking(updated);
+          // Update local state
+          const updated = booking.map((car) =>
+            car._id === booking._id ? { ...car, status: "Canceled" } : car
+          );
+          setBooking(updated);
 
-         // Show success alert
-         Swal.fire({
-           title: "Canceled!",
-           text: "The booking has been canceled.",
-           icon: "success",
-           timer: 2000,
-           showConfirmButton: false,
-         });
-       } catch (err) {
-         console.error(err);
-         Swal.fire("Error!", "Something went wrong.", "error");
-       }
-     }
-   });
- };
-
- 
+          // Show success alert
+          Swal.fire({
+            title: "Canceled!",
+            text: "The booking has been canceled.",
+            icon: "success",
+            timer: 2000,
+            showConfirmButton: false,
+          });
+        } catch (err) {
+          console.error(err);
+          Swal.fire("Error!", "Something went wrong.", "error");
+        }
+      }
+    });
+  };
 
   // Modify booking dates
   const handleBooking = async () => {

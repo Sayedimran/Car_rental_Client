@@ -71,19 +71,7 @@ const Login = () => {
               />
             </div>
 
-            {/* Confirm Password Input */}
-            {/* <div className="form-control mt-3">
-              <label className="label">
-                <span className="label-text text-gray-200">
-                  Confirm Password
-                </span>
-              </label>
-              <input
-                type="password"
-                placeholder="Confirm your password"
-                className="input input-bordered rounded-lg w-full"
-              />
-            </div> */}
+           
 
             {/* Submit Button */}
             <div className=" mt-6">

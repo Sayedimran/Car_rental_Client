@@ -69,6 +69,7 @@ const Navber = () => {
         <div className="flex">
           <li>
             <NavLink
+              to="/"
               className={({ isActive }) =>
                 isActive ? `font-bold text-white ` : `font-bold ${gradient}   `
               }
@@ -78,6 +79,7 @@ const Navber = () => {
           </li>
           <li>
             <NavLink
+              to="/allCars"
               className={({ isActive }) =>
                 isActive ? `font-bold text-white ` : `font-bold ${gradient}   `
               }

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import "react-tabs/style/react-tabs.css"; // Don't forget to import the styles
 import CarRentCard from "./CarRentCard";
+import axios from "axios";
 
 const TabCategory = () => {
   const [propulerCar, setPropulerCars] = useState([]);
@@ -22,9 +23,17 @@ const TabCategory = () => {
   // console.log(propulerCar, "cars");
 
   useEffect(() => {
-    fetch("http://localhost:5000/cars")
-      .then((res) => res.json())
-      .then((data) => setPropulerCars(data));
+    const fetchPopularCars = async () => {
+      try {
+        const { data } = await axios(`${import.meta.env.VITE_API_uRL}/cars`);
+        setPropulerCars(data);
+        
+        
+      } catch (error) {
+        console.error("Error fetching cars:", error);
+      }
+    };
+    fetchPopularCars();
   }, []);
   return (
     <div className="py-8 px-4">
